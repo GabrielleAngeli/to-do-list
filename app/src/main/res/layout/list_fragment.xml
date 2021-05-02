@@ -6,21 +6,42 @@
 
         <variable
             name="todoListViewModel"
-            type="com.example.todolist.screens.TodoListViewModel" />
+            type="com.example.todolist.list.TodoListViewModel" />
 
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        tools:context=".list.ListFragment">
+
+
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/list"-->
+<!--            android:text="@{todoListViewModel.items}"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            tools:ignore="MissingConstraints"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/add_button"/>-->
 
         <Button
             android:id="@+id/add_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/add"
+            android:onClick="@{() -> todoListViewModel.onStart()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/todo_list"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout_editor_absoluteX="235dp"
+            tools:layout_editor_absoluteY="210dp"
+            app:layout_constraintBottom_toTopOf="@+id/add_button"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

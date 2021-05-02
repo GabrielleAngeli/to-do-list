@@ -3,10 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable
+            name="addItemViewModel"
+            type="com.example.todolist.addItem.AddItemViewModel" />
+
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".screens.AddItemFragment">
+        tools:context=".addItem.AddItemFragment">
 
         <EditText
             android:id="@+id/addTitle"
@@ -17,7 +24,7 @@
             tools:ignore="MissingConstraints" />
 
         <Button
-            android:id="@+id/bAddList"
+            android:id="@+id/addList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
