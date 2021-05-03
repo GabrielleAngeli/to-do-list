@@ -49,5 +49,10 @@ class TodoListViewModel(
         }
     }
 
+    fun onDelete(itemId: Long) {
+        viewModelScope.launch {
+            database.delete(itemId)
+        }
+    }
 
 }

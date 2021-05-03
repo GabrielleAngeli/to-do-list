@@ -15,7 +15,7 @@ interface ToDoListDAO {
     suspend fun insert(toDoListData: ToDoListData)
 
     @Query("DELETE From todolist where id = :id")
-    suspend fun Delete(id : Long)
+    suspend fun delete(id : Long)
 
     @Query("SELECT * from todolist WHERE id = :id")
     suspend fun get(id: Long): ToDoListData?

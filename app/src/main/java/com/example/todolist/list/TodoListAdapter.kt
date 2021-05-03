@@ -17,41 +17,61 @@
 package com.example.todolist.list
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.todolist.R
-import com.example.todolist.TextItemViewHolder
 import com.example.todolist.database.ToDoListData
+import com.example.todolist.databinding.ListItemBinding
 
-class TodoListAdapter: RecyclerView.Adapter<TodoListAdapter.ViewHolder>() {
+class TodoListAdapter (val clickListener: TodoListListener): ListAdapter<ToDoListData, TodoListAdapter.ViewHolder>(TodoListDiffCallback()) {
 
-    var data =  listOf<ToDoListData>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
-    override fun getItemCount() = data.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = data[position]
-        val res = holder.itemView.context.resources
-        holder.text.text = item.title
+        val item = getItem(position)
+        holder.bind(item, clickListener)
         //holder.bind(item)
     }
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        val view = layoutInflater
-            .inflate(R.layout.list_item, parent, false)
 
-        return ViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        return ViewHolder.from(parent)
         //return ViewHolder.from(parent)
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        val text: TextView = itemView.findViewById(R.id.title)
+    class ViewHolder private constructor(val binding: ListItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        val text: TextView = binding.title
+
+        fun bind(item: ToDoListData, clickListener: TodoListListener) {
+            binding.clickListener = clickListener
+            binding.list = item
+            binding.executePendingBindings()
+//            text.text = item.title
+        }
+
+        companion object {
+            fun from(parent: ViewGroup): ViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = ListItemBinding.inflate(layoutInflater, parent, false)
+                return ViewHolder(binding)
+            }
+        }
 
     }
 
+}
+
+class TodoListDiffCallback : DiffUtil.ItemCallback<ToDoListData>() {
+    override fun areItemsTheSame(oldItem: ToDoListData, newItem: ToDoListData): Boolean {
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(oldItem: ToDoListData, newItem: ToDoListData): Boolean {
+        return oldItem == newItem
+    }
+}
+
+class TodoListListener(val clickListener: (itemId: Long) -> Unit) {
+
+    fun onClick(item: ToDoListData)  = clickListener(item.id)
 }
